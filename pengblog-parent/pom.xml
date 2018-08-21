@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.peng</groupId>
+  <artifactId>pengblog</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>pengblog</name>
+  <description>a ssm proj</description>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>pengblog-util</module>
+  	<module>pengblog-entity</module>
+  	<module>pengblog-dao</module>
+  	<module>pengblog-api</module>
+  	<module>pengblog-service</module>
+  	<module>pengblog-core</module>
+  </modules>
+</project>
