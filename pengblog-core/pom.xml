@@ -5,6 +5,7 @@
     <artifactId>pengblog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <packaging>jar</packaging>
   <artifactId>pengblog-core</artifactId>
     <properties>
         <junit.version>4.12</junit.version>

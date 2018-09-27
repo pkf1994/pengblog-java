@@ -17,10 +17,14 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
         
         <!-- 组件扫描路径 -->
-        <context:component-scan base-package="com.pengblog.controller" /> 
+        <context:component-scan base-package="com.pengblog.api" /> 
         
         <!-- 注解驱动 -->
         <mvc:annotation-driven/>
+        
+         <mvc:interceptors> 
+		    <bean class="com.pengblog.interceptor.ProcessInterceptor"></bean> 
+	  	</mvc:interceptors>
         
         
 </beans>
