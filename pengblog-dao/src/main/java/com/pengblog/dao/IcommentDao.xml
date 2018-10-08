@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengblog.dao.IcommentDao">
+	<select id="selectMaxPage" resultType="int">
+		SELECT COUNT(*) FROM
+			comment
+		WHERE 
+		   comment_hostid = #{hostId}
+	</select>
+	
+	<select id="selectCommentListByLimitIndex" resultType="Comment">
+		SELECT * FROM
+			comment
+		WHERE
+			comment_hostid = #{hostId}
+		ORDER BY 
+			comment_releaseTime
+		DESC	
+		LIMIT
+			#{startIndex}, #{pageScale}
+	</select>
+</mapper>

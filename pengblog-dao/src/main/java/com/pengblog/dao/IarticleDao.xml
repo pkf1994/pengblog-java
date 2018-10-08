@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pengblog.dao.IarticleDao">
+	<!-- 根据参数列表获取 -->
+	<select id="selectArticleListByLimitIndex" resultType="Article">
+		SELECT 
+		<foreach collection="paramList" open="" close="" separator="," item="field">
+				${field}
+		</foreach>
+		FROM
+			article
+		ORDER BY 
+			article_releaseTime
+		DESC	
+		LIMIT
+			#{startIndex}, #{pageScale}
+	</select> 
+	
+	<select id="selectCountOfArticle" resultType="int">
+		SELECT COUNT(*) FROM
+			article
+	</select>
+	
+	<select id="selectArticleById" resultType="Article">
+		SELECT * FROM
+		  	article
+		WHERE
+			article_id = #{article_id}
+	</select>
+</mapper>
