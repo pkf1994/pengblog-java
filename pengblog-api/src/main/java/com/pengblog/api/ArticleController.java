@@ -1,6 +1,7 @@
 package com.pengblog.api;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,25 +30,24 @@ public class ArticleController {
 	@Qualifier("articleService")
 	private IarticleService articleService;
 	
-	@RequestMapping("/article_summary.do")
+	@RequestMapping(value="/article_summary.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getArticleSummary(HttpServletRequest request,
-									HttpServletResponse response,
-									int currentPage,
+	public Object getArticleSummaryList(int currentPage,
 									int pageScale) {
 		
-			response.setHeader("Access-Control-Allow-Origin", "*");
-		
-			System.out.println("执行");
 			//获取文章列表
-			Article[] articleList = articleService.getArticleSummary(currentPage,pageScale);
+			Article[] articleList = articleService.getArticleSummaryList(currentPage,pageScale);
 			
+		/*	for (int i = 0; i < articleList.length; i++) {
+				System.out.println(articleList[i].getArticle_title());
+			}*/
+		
 			//根据页面规模获取总页数
 			int maxPage = articleService.getMaxPage(pageScale);
 			
 			//组装json
 			Gson gson = new Gson();
-			HashMap<String,Object> ret = new HashMap<String,Object>();
+			Map<String,Object> ret = new HashMap<String,Object>();
 			ret.put("articleList", articleList);
 			ret.put("maxPage",maxPage);
 			String retJson = gson.toJson(ret);
@@ -55,5 +55,17 @@ public class ArticleController {
 			return retJson;
 	}
 	
+	@RequestMapping(value="/article.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getArticle(int article_id) {
+		
+		Article article = articleService.getArticleById(article_id);
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(article);
+		
+		return retJson;
+	}
 	
 }
