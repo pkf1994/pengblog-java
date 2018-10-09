@@ -3,6 +3,8 @@
  */
 package com.pengblog.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pengblog.bean.Comment;
 
 /**
@@ -11,8 +13,10 @@ import com.pengblog.bean.Comment;
  */
 public interface IcommentDao {
 	
-	int selectMaxPage(int hostId, int pageScale);
+	int selectCountOfCommentByHostId(@Param("hostId")int hostId);
 	
-	Comment[] selectCommentListByLimitIndex(int hostId, int startIndex, int pageScale);
+	Comment[] selectCommentListByLimitIndex(@Param("hostId")int hostId, @Param("startIndex")int startIndex, @Param("pageScale")int pageScale);
+
+	Comment selectCommentById(int comment_id);
 	
 }

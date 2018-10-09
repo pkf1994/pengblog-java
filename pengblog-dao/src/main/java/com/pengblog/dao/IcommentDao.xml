@@ -3,14 +3,34 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pengblog.dao.IcommentDao">
-	<select id="selectMaxPage" resultType="int">
+
+	<resultMap type="Comment" id="commentMapper">
+		<id column="comment_id" property="comment_id"/>
+		<result column="comment_referComment" property="comment_referComment"/>
+		<result column="comment_content" property="comment_content"/>
+		<result column="comment_releaseTime" property="comment_releaseTime"/>
+		<result column="comment_hostId" property="comment_hostId"/>
+		<association property="comment_author"
+					javaType="Visitor"
+					select="selectVisitorById"
+					column="comment_author"/>
+	</resultMap>
+	
+	<select id="selectVisitorById" resultType="Visitor">
+		SELECT * FROM
+			visitor
+		WHERE 
+			visitor_id = #{comment_author}
+	</select>
+	
+	<select id="selectCountOfCommentByHostId" resultType="int">
 		SELECT COUNT(*) FROM
 			comment
 		WHERE 
 		   comment_hostid = #{hostId}
 	</select>
 	
-	<select id="selectCommentListByLimitIndex" resultType="Comment">
+	<select id="selectCommentListByLimitIndex" resultMap="commentMapper">
 		SELECT * FROM
 			comment
 		WHERE
@@ -21,4 +41,12 @@
 		LIMIT
 			#{startIndex}, #{pageScale}
 	</select>
+	
+	<select id="selectCommentById" resultMap="commentMapper">
+		SELECT * FROM
+			comment
+		WHERE
+			comment_id = #{comment_id}
+	</select>
+	
 </mapper>

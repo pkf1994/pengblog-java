@@ -7,13 +7,13 @@ public class Comment implements Serializable{
 	
 	private Integer comment_id;
 	
-	private String comment_author;
+	private Visitor comment_author;
 	
-	private Integer comment_refercomment;
+	private Integer comment_referComment;
 	
 	private String comment_content;
 	
-	private Date comment_releasetime;
+	private Date comment_releaseTime;
 	
 	private Integer comment_hostId;
 
@@ -31,32 +31,13 @@ public class Comment implements Serializable{
 		this.comment_id = comment_id;
 	}
 
-	/**
-	 * @return the comment_author
-	 */
-	public String getComment_author() {
+
+	public Visitor getComment_author() {
 		return comment_author;
 	}
 
-	/**
-	 * @param comment_author the comment_author to set
-	 */
-	public void setComment_author(String comment_author) {
+	public void setComment_author(Visitor comment_author) {
 		this.comment_author = comment_author;
-	}
-
-	/**
-	 * @return the comment_refercomment
-	 */
-	public Integer getComment_refercomment() {
-		return comment_refercomment;
-	}
-
-	/**
-	 * @param comment_refercomment the comment_refercomment to set
-	 */
-	public void setComment_refercomment(Integer comment_refercomment) {
-		this.comment_refercomment = comment_refercomment;
 	}
 
 	/**
@@ -73,37 +54,36 @@ public class Comment implements Serializable{
 		this.comment_content = comment_content;
 	}
 
-	/**
-	 * @return the comment_releasetime
-	 */
-	public Date getComment_releasetime() {
-		return comment_releasetime;
-	}
 
-	/**
-	 * @param comment_releasetime the comment_releasetime to set
-	 */
-	public void setComment_releasetime(Date comment_releasetime) {
-		this.comment_releasetime = comment_releasetime;
-	}
 	
 
 
-	/**
-	 * @param comment_id
-	 * @param comment_author
-	 * @param comment_refercomment
-	 * @param comment_content
-	 * @param comment_releasetime
-	 * @param comment_hostId
-	 */
-	public Comment(Integer comment_id, String comment_author, Integer comment_refercomment, String comment_content, Date comment_releasetime, Integer comment_hostId) {
+	public Integer getComment_referComment() {
+		return comment_referComment;
+	}
+
+	public void setComment_referComment(Integer comment_referComment) {
+		this.comment_referComment = comment_referComment;
+	}
+
+	public Date getComment_releaseTime() {
+		return comment_releaseTime;
+	}
+
+	public void setComment_releaseTime(Date comment_releaseTime) {
+		this.comment_releaseTime = comment_releaseTime;
+	}
+
+	
+
+	public Comment(Integer comment_id, Visitor comment_author, Integer comment_referComment, String comment_content,
+			Date comment_releaseTime, Integer comment_hostId) {
 		super();
 		this.comment_id = comment_id;
 		this.comment_author = comment_author;
-		this.comment_refercomment = comment_refercomment;
+		this.comment_referComment = comment_referComment;
 		this.comment_content = comment_content;
-		this.comment_releasetime = comment_releasetime;
+		this.comment_releaseTime = comment_releaseTime;
 		this.comment_hostId = comment_hostId;
 	}
 

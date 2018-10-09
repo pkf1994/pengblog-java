@@ -21,7 +21,11 @@ public class CommentService implements IcommentService{
 	
 
 	public int getMaxPage(int hostId, int pageScale) {
-		int maxPage = commentDao.selectMaxPage(hostId, pageScale);
+		
+		int countOfComment = commentDao.selectCountOfCommentByHostId(hostId);
+		
+		int maxPage = (int) Math.ceil((double)(countOfComment/pageScale)) + 1;
+				
 		return maxPage;
 	}
 
@@ -36,5 +40,21 @@ public class CommentService implements IcommentService{
 		Comment[] commentList = commentDao.selectCommentListByLimitIndex(hostId, startIndex, pageScale);
 		
 		return commentList;
+	}
+
+	@Override
+	public int getCountOfComment(int hostId) {
+		
+		int countOfComment = commentDao.selectCountOfCommentByHostId(hostId);
+		
+		return countOfComment;
+	}
+
+	@Override
+	public Comment getCommentById(int comment_id) {
+		
+		Comment comment = commentDao.selectCommentById(comment_id);
+		
+		return comment;
 	}
 }
