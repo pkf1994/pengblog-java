@@ -57,4 +57,12 @@ public class CommentService implements IcommentService{
 		
 		return comment;
 	}
+
+	@Override
+	public int saveComment(Comment comment) {
+		
+		int comment_id = commentDao.insertComment(comment);
+		
+		return comment_id;
+	}
 }

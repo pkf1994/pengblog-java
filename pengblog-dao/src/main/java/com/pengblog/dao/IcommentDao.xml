@@ -49,4 +49,20 @@
 			comment_id = #{comment_id}
 	</select>
 	
+	<insert id="insertComment">
+		INSERT INTO
+			comment(comment_author, 
+					comment_referComment, 
+					comment_content, 
+					comment_releaseTime, 
+					comment_hostId)
+		VALUES(#{comment_author.visitor_id}, 
+				#{comment_referComment}, 
+				#{comment_content}, 
+				#{comment_releaseTime},
+				#{comment_hostId})
+		<selectKey resultType="int" keyProperty="comment_id" order="AFTER">
+			select @@identity
+		</selectKey>
+	</insert>
 </mapper>

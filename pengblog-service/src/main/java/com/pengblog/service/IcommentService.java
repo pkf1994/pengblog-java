@@ -28,4 +28,6 @@ public interface IcommentService {
 
 	Comment getCommentById(int comment_id);
 
+	int saveComment(Comment comment);
+
 }

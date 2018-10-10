@@ -18,5 +18,7 @@ public interface IcommentDao {
 	Comment[] selectCommentListByLimitIndex(@Param("hostId")int hostId, @Param("startIndex")int startIndex, @Param("pageScale")int pageScale);
 
 	Comment selectCommentById(int comment_id);
+
+	int insertComment(Comment comment);
 	
 }
