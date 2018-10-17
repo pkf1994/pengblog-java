@@ -3,8 +3,6 @@ package com.pengblog.api;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +16,7 @@ import com.pengblog.service.IarticleService;
 
 /**
  * @author Peng Kaifan
- * ÓëarticleÓÐ¹ØµÄ½Ó¿Ú
+ * ï¿½ï¿½articleï¿½Ð¹ØµÄ½Ó¿ï¿½
  *
  */
 
@@ -35,17 +33,17 @@ public class ArticleController {
 	public Object getArticleSummaryList(int currentPage,
 									int pageScale) {
 		
-			//»ñÈ¡ÎÄÕÂÁÐ±í
+			//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 			Article[] articleList = articleService.getArticleSummaryList(currentPage,pageScale);
 			
 		/*	for (int i = 0; i < articleList.length; i++) {
 				System.out.println(articleList[i].getArticle_title());
 			}*/
 		
-			//¸ù¾ÝÒ³Ãæ¹æÄ£»ñÈ¡×ÜÒ³Êý
+			//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ä£ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½
 			int maxPage = articleService.getMaxPage(pageScale);
 			
-			//×é×°json
+			//ï¿½ï¿½×°json
 			Gson gson = new Gson();
 			Map<String,Object> ret = new HashMap<String,Object>();
 			ret.put("articleList", articleList);

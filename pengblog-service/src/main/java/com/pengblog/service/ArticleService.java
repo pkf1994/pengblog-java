@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pengblog.bean.Article;
 import com.pengblog.dao.IarticleDao;
-import com.pengblog.num.ArticleFields;
+import com.pengblog.utils.ArticleFields;
 
 /**
  * @author Administrator

@@ -26,5 +26,6 @@
 		    <bean class="com.pengblog.interceptor.ProcessInterceptor"></bean> 
 	  	</mvc:interceptors>
         
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />  
         
 </beans>

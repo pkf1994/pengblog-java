@@ -1,4 +1,4 @@
-package com.pengblog.num;
+package com.pengblog.utils;
 
 /**
  * @author Administrator

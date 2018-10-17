@@ -6,4 +6,11 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>pengblog-util</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.peng</groupId>
+	    <artifactId>pengblog-core</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
