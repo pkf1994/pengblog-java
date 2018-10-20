@@ -22,7 +22,10 @@ public interface IarticleDao {
 	 * @param paramList 
 	 * @return
 	 */
-	Article[] selectArticleListByLimitIndex(@Param("startIndex")int startIndex, @Param("pageScale")int pageScale, @Param("paramList") List<String> paramList);
+	Article[] selectArticleListByLimitIndex(@Param("startIndex")int startIndex, 
+											@Param("pageScale")int pageScale, 
+											@Param("paramList")List<String> paramList,
+											@Param("article_type")String article_type);
 
 	/**
 	 * @return
@@ -34,5 +37,7 @@ public interface IarticleDao {
 	 * @return
 	 */
 	Article selectArticleById(int article_id);
+
+	int insertArticle(Article article);
 	
 }

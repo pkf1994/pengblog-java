@@ -1,11 +1,13 @@
 package com.pengblog.service;
 
 
+import java.util.Map;
+
 import com.pengblog.bean.Article;
 
 /**
  * @author Administrator
- *	article相关业务接口
+ *	article锟斤拷锟揭碉拷锟接匡拷
  */
 public interface IarticleService {
 
@@ -27,6 +29,12 @@ public interface IarticleService {
 	 * @return
 	 */
 	Article getArticleById(int article_id);
+
+	Article constructArticle(Map<String, String> articleData);
+	
+	int saveArticle(Article article);
+
+	Article handleImageUrl(Article article);
 
 
 }

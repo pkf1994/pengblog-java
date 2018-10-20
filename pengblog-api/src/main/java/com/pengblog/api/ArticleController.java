@@ -3,10 +3,12 @@ package com.pengblog.api;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,26 +33,19 @@ public class ArticleController {
 	@RequestMapping(value="/article_summary.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public Object getArticleSummaryList(int currentPage,
-									int pageScale) {
+										int pageScale) {
 		
-			//��ȡ�����б�
-			Article[] articleList = articleService.getArticleSummaryList(currentPage,pageScale);
-			
-		/*	for (int i = 0; i < articleList.length; i++) {
-				System.out.println(articleList[i].getArticle_title());
-			}*/
+		Article[] articleList = articleService.getArticleSummaryList(currentPage,pageScale);
 		
-			//����ҳ���ģ��ȡ��ҳ��
-			int maxPage = articleService.getMaxPage(pageScale);
-			
-			//��װjson
-			Gson gson = new Gson();
-			Map<String,Object> ret = new HashMap<String,Object>();
-			ret.put("articleList", articleList);
-			ret.put("maxPage",maxPage);
-			String retJson = gson.toJson(ret);
-			
-			return retJson;
+		int maxPage = articleService.getMaxPage(pageScale);
+		
+		Gson gson = new Gson();
+		Map<String,Object> ret = new HashMap<String,Object>();
+		ret.put("articleList", articleList);
+		ret.put("maxPage",maxPage);
+		String retJson = gson.toJson(ret);
+		
+		return retJson;
 	}
 	
 	@RequestMapping(value="/article.do",produces="application/json;charset=UTF-8")
@@ -64,6 +59,19 @@ public class ArticleController {
 		String retJson = gson.toJson(article);
 		
 		return retJson;
+	}
+	
+	@RequestMapping(value="/upload_article.do", produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object uploadArticle(@RequestBody Map<String,String> articleData) {
+		
+		Article article = articleService.constructArticle(articleData);
+		
+		Article handledArticle = articleService.handleImageUrl(article);
+		
+		articleService.saveArticle(handledArticle);
+		
+		return "insert article successful";
 	}
 	
 }

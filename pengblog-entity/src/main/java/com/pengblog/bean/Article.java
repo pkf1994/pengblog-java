@@ -4,46 +4,27 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用以承载文章数据的实体
+ *
  * @author Peng Kaifan
  *
  */
 public class Article implements Serializable{
 	
-	/**
-	 * 文章id
-	 */
 	private Integer article_id;
 	
-	/**
-	 * 文章标题
-	 */
 	private String article_title;
 	
-	/**
-	 * 文章作者
-	 */
 	private String article_author;
 	
-	/**
-	 * 文章正文
-	 */
 	private String article_content;
 	
-	/**
-	 * 文章摘要
-	 */
 	private String article_summary;
 	
-	/**
-	 * 发布时间
-	 */
 	private Date article_releaseTime;
 	
-	/**
-	 * 文章标签
-	 */
 	private String article_label;
+	
+	private String article_type;
 
 	/**
 	 * @return the article_id
@@ -145,16 +126,19 @@ public class Article implements Serializable{
 		this.article_label = article_label;
 	}
 
-	/**
-	 * @param article_id
-	 * @param article_title
-	 * @param article_author
-	 * @param article_content
-	 * @param article_summary
-	 * @param article_releaseTime
-	 * @param article_label
-	 */
-	public Article(Integer article_id, String article_title, String article_author, String article_content, String article_summary, Date article_releaseTime, String article_label) {
+	
+	public String getArticle_type() {
+		return article_type;
+	}
+
+	public void setArticle_type(String article_type) {
+		this.article_type = article_type;
+	}
+
+	
+
+	public Article(Integer article_id, String article_title, String article_author, String article_content,
+			String article_summary, Date article_releaseTime, String article_label, String article_type) {
 		super();
 		this.article_id = article_id;
 		this.article_title = article_title;
@@ -163,10 +147,11 @@ public class Article implements Serializable{
 		this.article_summary = article_summary;
 		this.article_releaseTime = article_releaseTime;
 		this.article_label = article_label;
+		this.article_type = article_type;
 	}
 
 	/**
-	 * 无参构造器
+	 * 
 	 */
 	public Article() {
 		super();
