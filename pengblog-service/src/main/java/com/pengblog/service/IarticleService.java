@@ -36,5 +36,9 @@ public interface IarticleService {
 
 	Article handleImageUrl(Article article);
 
+	Article[] getDraftList(int currentPage, int pageScale);
+
+	int getMaxPageOfDraft(int pageScale);
+
 
 }

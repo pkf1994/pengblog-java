@@ -27,17 +27,14 @@ public interface IarticleDao {
 											@Param("paramList")List<String> paramList,
 											@Param("article_type")String article_type);
 
-	/**
-	 * @return
-	 */
-	int selectCountOfArticle();
+	
+	int selectCountOfArticle(@Param("article_type")String article_type);
 
-	/**
-	 * @param article_id
-	 * @return
-	 */
+	
 	Article selectArticleById(int article_id);
 
 	int insertArticle(Article article);
+
+	int selectCountOfDraft();
 	
 }

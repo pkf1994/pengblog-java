@@ -63,7 +63,7 @@ public class ArticleService implements IarticleService{
 	@Transactional
 	public int getMaxPage(int pageScale) {
 		
-		int countOfAllArticle = articleDao.selectCountOfArticle();
+		int countOfAllArticle = articleDao.selectCountOfArticle("article");
 		
 		int maxPage = (int) Math.ceil((double)(countOfAllArticle/pageScale)) + 1;
 		
@@ -160,6 +160,32 @@ public class ArticleService implements IarticleService{
 		int article_id = articleDao.insertArticle(article);
 		
 		return article_id;
+	}
+
+	@Override
+	public Article[] getDraftList(int currentPage, int pageScale) {
+		int startIndex = (currentPage - 1) * pageScale;
+		
+		List<String> paramList = new ArrayList<>();
+		
+		paramList.add(ArticleFields.ARTICLE_ID.fieldName);
+		paramList.add(ArticleFields.ARTICLE_TITLE.fieldName);
+		paramList.add(ArticleFields.ARTICLE_RELEASETIME.fieldName);
+
+			
+		Article[] articleList = articleDao.selectArticleListByLimitIndex(startIndex,pageScale,paramList,"draft");
+		
+		return articleList;
+	}
+
+	@Override
+	public int getMaxPageOfDraft(int pageScale) {
+		
+		int countOfAllArticle = articleDao.selectCountOfArticle("draft");
+		
+		int maxPage = (int) Math.ceil((double)(countOfAllArticle/pageScale)) + 1;
+		
+		return maxPage;
 	}
 	
 	

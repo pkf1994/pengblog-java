@@ -23,6 +23,8 @@
 	<select id="selectCountOfArticle" resultType="int">
 		SELECT COUNT(*) FROM
 			article
+		WHERE 
+			article_type =  #{article_type}
 	</select>
 	
 	<select id="selectArticleById" resultType="Article">

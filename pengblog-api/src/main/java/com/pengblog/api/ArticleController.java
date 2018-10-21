@@ -74,4 +74,21 @@ public class ArticleController {
 		return "insert article successful";
 	}
 	
+	@RequestMapping(value="/draft_list.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getDraftList(int currentPage,
+								int pageScale) {
+		Article[] articleList = articleService.getDraftList(currentPage,pageScale);
+		
+		int maxPage = articleService.getMaxPageOfDraft(pageScale);
+		
+		Gson gson = new Gson();
+		Map<String,Object> ret = new HashMap<String,Object>();
+		ret.put("articleList", articleList);
+		ret.put("maxPage",maxPage);
+		String retJson = gson.toJson(ret);
+		
+		return retJson;
+	}
+	
 }
