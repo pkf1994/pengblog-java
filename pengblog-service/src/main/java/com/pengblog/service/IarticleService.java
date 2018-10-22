@@ -40,5 +40,9 @@ public interface IarticleService {
 
 	int getMaxPageOfDraft(int pageScale);
 
+	void deleteArticleById(int article_id);
+
+	void updateArticle(Article handledArticle);
+
 
 }

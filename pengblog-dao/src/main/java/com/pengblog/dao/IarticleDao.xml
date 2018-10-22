@@ -54,4 +54,26 @@
 			select @@identity
 		</selectKey>
 	</insert>
+	
+	<delete id="deleteArticleById">
+		DELETE FROM
+			article
+		WHERE
+			article_id = #{article_id}
+	</delete>
+	
+	<update id="updateArticle">
+		UPDATE 
+			article
+		SET
+			article_title = #{article_title},
+			article_author = #{article_author},
+			article_label = #{article_label},
+			article_summary = #{article_summary},
+			article_content = #{article_content},
+			article_releaseTime = #{article_releaseTime},
+			article_type = #{article_type}
+		WHERE
+			article_id = #{article_id}
+	</update>
 </mapper>

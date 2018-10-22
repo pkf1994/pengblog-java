@@ -187,6 +187,19 @@ public class ArticleService implements IarticleService{
 		
 		return maxPage;
 	}
+
+	@Override
+	public void deleteArticleById(int article_id) {
+		
+		articleDao.deleteArticleById(article_id);
+		
+	}
+
+	@Override
+	public void updateArticle(Article handledArticle) {
+		articleDao.updateArticle(handledArticle);
+		
+	}
 	
 	
 	

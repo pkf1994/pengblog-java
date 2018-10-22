@@ -36,5 +36,9 @@ public interface IarticleDao {
 	int insertArticle(Article article);
 
 	int selectCountOfDraft();
+
+	void deleteArticleById(int article_id);
+
+	void updateArticle(Article handledArticle);
 	
 }

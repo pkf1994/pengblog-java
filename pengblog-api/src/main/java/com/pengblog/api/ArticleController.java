@@ -69,9 +69,13 @@ public class ArticleController {
 		
 		Article handledArticle = articleService.handleImageUrl(article);
 		
-		articleService.saveArticle(handledArticle);
-		
-		return "insert article successful";
+		if(handledArticle.getArticle_id() != 0) {
+			articleService.updateArticle(handledArticle);
+		}else {
+			articleService.saveArticle(handledArticle);
+		}
+			
+		return handledArticle.getArticle_id();
 	}
 	
 	@RequestMapping(value="/draft_list.do",produces="application/json;charset=UTF-8")
@@ -89,6 +93,16 @@ public class ArticleController {
 		String retJson = gson.toJson(ret);
 		
 		return retJson;
+	}
+	
+	@RequestMapping(value="/delete_article.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object deleteArticle(int article_id) {
+		
+		
+		articleService.deleteArticleById(article_id);
+		
+		return "delete success";
 	}
 	
 }
