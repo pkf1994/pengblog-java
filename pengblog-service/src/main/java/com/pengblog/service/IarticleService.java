@@ -45,4 +45,6 @@ public interface IarticleService {
 	void updateArticle(Article handledArticle);
 
 
+
+
 }

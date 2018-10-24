@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,12 +45,13 @@ public class ArticleService implements IarticleService{
 		
 		List<String> paramList = new ArrayList<>();
 		
-		paramList.add(ArticleFields.ARTICLE_ID.fieldName);
-		paramList.add(ArticleFields.ARTICLE_TITLE.fieldName);
-		paramList.add(ArticleFields.ARTICLE_AUTHOR.fieldName);
-		paramList.add(ArticleFields.ARTICLE_SUMMARY.fieldName);
-		paramList.add(ArticleFields.ARTICLE_RELEASETIME.fieldName);
-		paramList.add(ArticleFields.ARTICLE_LABEL.fieldName);
+		paramList.add("article_id");
+		paramList.add("article_title");
+		paramList.add("article_author");
+		paramList.add("article_summary");
+		paramList.add("article_releaseTime");
+		paramList.add("article_label");
+		paramList.add("article_previewImageUrl");
 
 			
 		Article[] articleList = articleDao.selectArticleListByLimitIndex(startIndex,pageScale,paramList,"article");
@@ -126,6 +128,16 @@ public class ArticleService implements IarticleService{
 				article.setArticle_summary(article_summary);
 			}
 			
+			if(doc.select("img[src]").size() > 0) {
+				
+				String article_firstImageUrl = doc.select("img[src]").first().attr("src");
+				
+				String article_previewImageUrl = article_firstImageUrl + "?imageView2/1/w/200/h/150/interlace/1/q/53";
+				
+				article.setArticle_previewImageUrl(article_previewImageUrl);
+				
+			}
+			
 		}
 		
 		if(articleData.containsKey("article_type") && (articleData.get("article_type")!="")) {
@@ -200,6 +212,7 @@ public class ArticleService implements IarticleService{
 		articleDao.updateArticle(handledArticle);
 		
 	}
+
 	
 	
 	

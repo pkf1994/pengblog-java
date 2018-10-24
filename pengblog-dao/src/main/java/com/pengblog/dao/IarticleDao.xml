@@ -42,14 +42,16 @@
 					article_summary, 
 					article_content,
 					article_releaseTime,
-					article_type)
+					article_type, 
+					article_previewImageUrl)
 		VALUES(#{article_title}, 
 				#{article_author}, 
 				#{article_label}, 
 				#{article_summary},
 				#{article_content},
 				#{article_releaseTime},
-				#{article_type})
+				#{article_type}, 
+				#{article_previewImageUrl})
 		<selectKey resultType="int" keyProperty="article_id" order="AFTER">
 			select @@identity
 		</selectKey>
@@ -72,7 +74,8 @@
 			article_summary = #{article_summary},
 			article_content = #{article_content},
 			article_releaseTime = #{article_releaseTime},
-			article_type = #{article_type}
+			article_type = #{article_type},
+			article_previewImageUrl = #{article_previewImageUrl}
 		WHERE
 			article_id = #{article_id}
 	</update>
