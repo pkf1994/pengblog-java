@@ -1,6 +1,7 @@
 package com.pengblog.service;
 
 
+import java.util.List;
 import java.util.Map;
 
 import com.pengblog.bean.Article;
@@ -43,6 +44,15 @@ public interface IarticleService {
 	void deleteArticleById(int article_id);
 
 	void updateArticle(Article handledArticle);
+
+	Map<Integer, Object> getarticleFiling();
+
+
+	List<Map<String, Integer>> getarticleLabelList();
+
+	Article[] getArticleItemListByLimitIndexAndSearchWords(int currentPage, int pageScale, String[] searchWords);
+
+	int getMaxPageBySearchWords(int pageScale, String[] searchWords);
 
 
 

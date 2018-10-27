@@ -3,6 +3,8 @@
  */
 package com.pengblog.service;
 
+import java.util.List;
+
 import com.pengblog.bean.Comment;
 
 /**
@@ -29,5 +31,7 @@ public interface IcommentService {
 	Comment getCommentById(int comment_id);
 
 	int saveComment(Comment comment);
+
+	List<Comment> getCommentLastList(int listScale);
 
 }

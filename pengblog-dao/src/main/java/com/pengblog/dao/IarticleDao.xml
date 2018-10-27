@@ -24,7 +24,7 @@
 		SELECT COUNT(*) FROM
 			article
 		WHERE 
-			article_type =  #{article_type}
+			article_type = #{article_type}
 	</select>
 	
 	<select id="selectArticleById" resultType="Article">
@@ -79,4 +79,64 @@
 		WHERE
 			article_id = #{article_id}
 	</update>
+	
+	<select id="selectCountOfArticleByDateBetween" resultType="int">
+		SELECT COUNT(*) FROM
+			article
+		WHERE
+			article_releaseTime > #{tempDateBegin}
+		AND
+			#{tempDateEnd} >= article_releaseTime
+	</select>
+
+	<select id="selectArticleLabelList" resultType="java.util.HashMap">  
+        SELECT 
+        	article_label,
+        	count(article_id) as number
+       	FROM 
+       		article
+   		WHERE
+   			 article_type = 'article'
+	 	GROUP BY
+	 		article_label
+	</select>
+	
+	<select id="selectArticleByLimitIndexAndSearchWords" resultType="Article">
+		SELECT
+		<foreach collection="paramList" open="" close="" separator="," item="field">
+				${field}
+		</foreach>
+		FROM
+			article
+		WHERE
+			article_type =  #{article_type}
+		AND
+		<foreach collection="searchWords" open="" close="" separator="or" item="word">
+				article_title LIKE  CONCAT('%',#{word},'%') 
+				or 
+				article_author  LIKE CONCAT('%',#{word},'%') 
+				or 
+				article_label LIKE CONCAT('%',#{word},'%')
+		</foreach>
+		ORDER BY 
+			article_releaseTime
+		DESC	
+		LIMIT
+			#{startIndex}, #{pageScale}
+	</select>
+	
+	<select id="selectCountOfArticleBySearchWords" resultType="int">
+		SELECT COUNT(*) FROM
+			article
+		WHERE 
+			article_type =  #{article_type}
+		AND
+		<foreach collection="searchWords" open="" close="" separator="or" item="word">
+				article_title LIKE  CONCAT('%',#{word},'%') 
+				or 
+				article_author  LIKE CONCAT('%',#{word},'%') 
+				or 
+				article_label LIKE CONCAT('%',#{word},'%')
+		</foreach>
+	</select>
 </mapper>

@@ -65,4 +65,21 @@
 			select @@identity
 		</selectKey>
 	</insert>
+	
+	<delete id="deleteCommentByArticleId">
+		DELETE FROM
+			comment
+		WHERE
+			comment_hostId = #{comment_hostId}
+	</delete>
+	
+	<select id="selectCommentLastList" resultMap="commentMapper">
+		SELECT * FROM
+			comment
+		ORDER BY 
+			comment_releaseTime
+		DESC	
+		LIMIT
+			0, #{listScale}
+	</select>
 </mapper>

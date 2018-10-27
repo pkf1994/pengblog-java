@@ -3,6 +3,8 @@
  */
 package com.pengblog.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +66,13 @@ public class CommentService implements IcommentService{
 		int comment_id = commentDao.insertComment(comment);
 		
 		return comment_id;
+	}
+
+	@Override
+	public List<Comment> getCommentLastList(int listScale) {
+		
+		List<Comment> retList = commentDao.selectCommentLastList(listScale);
+		
+		return retList;
 	}
 }

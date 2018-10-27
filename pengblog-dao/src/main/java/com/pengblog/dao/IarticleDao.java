@@ -3,7 +3,9 @@
  */
 package com.pengblog.dao;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -40,5 +42,18 @@ public interface IarticleDao {
 	void deleteArticleById(int article_id);
 
 	void updateArticle(Article handledArticle);
+
+	int selectCountOfArticleByDateBetween(@Param("tempDateBegin")Date tempDateBegin, @Param("tempDateEnd")Date tempDateEnd);
+
+	List<Map<String, Integer>> selectArticleLabelList();
+
+	Article[] selectArticleByLimitIndexAndSearchWords(@Param("startIndex")int startIndex, 
+													@Param("pageScale")int pageScale, 
+													@Param("paramList")List<String> paramList,
+													@Param("article_type")String article_type,
+													@Param("searchWords")String[] searchWords);
+
+	int selectCountOfArticleBySearchWords(@Param("article_type")String article_type, 
+										@Param("searchWords")String[] searchWords);
 	
 }

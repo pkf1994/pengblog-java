@@ -1,10 +1,9 @@
 package com.pengblog.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -103,6 +102,55 @@ public class ArticleController {
 		articleService.deleteArticleById(article_id);
 		
 		return "delete success";
+	}
+	
+	@RequestMapping(value="/article_filing.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getArticleFiling() {
+		
+		Map<Integer,Object> articleFilingMap = articleService.getarticleFiling();
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(articleFilingMap);
+		
+		return retJson;
+	}
+	
+	@RequestMapping(value="/article_label.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getArticleLabelList() {
+		
+		List<Map<String, Integer>> articleLabelList = articleService.getarticleLabelList();
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(articleLabelList);
+		
+		return retJson;
+	}
+	
+	@RequestMapping(value="/article_search.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getArticleListBySearchWords(int currentPage, int pageScale, String searchString) {
+		
+		String[] searchWords = searchString.split("\\s+");
+		
+		Article[] articles = articleService.getArticleItemListByLimitIndexAndSearchWords(currentPage, pageScale, searchWords);
+		
+		int maxPage = articleService.getMaxPageBySearchWords(pageScale, searchWords);
+		
+		Map<String, Object> retMap = new HashMap<>();
+		
+		retMap.put("maxPage", maxPage);
+		
+		retMap.put("articleList", articles);
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(retMap);
+		
+		return retJson;
 	}
 	
 }

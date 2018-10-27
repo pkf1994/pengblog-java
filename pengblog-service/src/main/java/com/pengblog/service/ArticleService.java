@@ -1,7 +1,9 @@
 package com.pengblog.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pengblog.bean.Article;
 import com.pengblog.dao.IarticleDao;
+import com.pengblog.dao.IcommentDao;
 import com.pengblog.utils.ArticleFields;
 import com.pengblog.utils.MyHtmlUtil;
 
@@ -28,6 +31,9 @@ public class ArticleService implements IarticleService{
 	
 	@Autowired
 	private IarticleDao articleDao;
+	
+	@Autowired
+	private IcommentDao commentDao;
 	
 	@Autowired
 	@Qualifier("qiniuService")
@@ -66,6 +72,12 @@ public class ArticleService implements IarticleService{
 	public int getMaxPage(int pageScale) {
 		
 		int countOfAllArticle = articleDao.selectCountOfArticle("article");
+		
+		if(countOfAllArticle % pageScale == 0) {
+			
+			return (int)countOfAllArticle/pageScale;
+			
+		}
 		
 		int maxPage = (int) Math.ceil((double)(countOfAllArticle/pageScale)) + 1;
 		
@@ -205,12 +217,110 @@ public class ArticleService implements IarticleService{
 		
 		articleDao.deleteArticleById(article_id);
 		
+		commentDao.deleteCommentByArticleId(article_id);
+		
 	}
 
 	@Override
 	public void updateArticle(Article handledArticle) {
 		articleDao.updateArticle(handledArticle);
 		
+	}
+
+	@Override
+	public Map<Integer, Object> getarticleFiling() {
+		
+		Map<Integer, Object> retMap = new HashMap<>();
+		
+		Calendar now = Calendar.getInstance();
+		
+		int yearNow = now.get(Calendar.YEAR);
+		
+		for(int i = 0; i < 10; i++) {
+			
+			Calendar tempCalendarBeginY = Calendar.getInstance();
+			
+			Calendar tempCalendarEndY = Calendar.getInstance();
+			
+			tempCalendarBeginY.set(yearNow - i, 0, 1);
+			
+			tempCalendarEndY.set(yearNow - i + 1, 0, 1);
+			
+			Date tempDateBeginY = tempCalendarBeginY.getTime();
+			
+			Date tempDateEndY = tempCalendarEndY.getTime();
+			
+			int countY = articleDao.selectCountOfArticleByDateBetween(tempDateBeginY, tempDateEndY);
+			
+			if(countY > 0) {
+				
+				List<Integer> monthList = new ArrayList<>();
+				
+				for(int j = 0; j < 12; j++) {
+
+					Calendar tempCalendarBeginM = Calendar.getInstance();
+					
+					Calendar tempCalendarEndM = Calendar.getInstance();
+					
+					tempCalendarBeginM.set(yearNow - i, j, 1);
+					
+					tempCalendarEndM.set(yearNow - i, j + 1, 1);
+					
+					Date tempDateBeginM = tempCalendarBeginM.getTime();
+					
+					Date tempDateEndM = tempCalendarEndM.getTime();
+					
+					int countM = articleDao.selectCountOfArticleByDateBetween(tempDateBeginM, tempDateEndM);
+					
+					if(countM > 0) {
+						monthList.add(tempCalendarBeginM.get(Calendar.MONTH) + 1);
+					}
+				}
+				
+				retMap.put(tempCalendarBeginY.get(Calendar.YEAR), monthList);
+				
+			}
+		}
+		
+		return retMap;
+	}
+
+
+	@Override
+	public List<Map<String, Integer>> getarticleLabelList() {
+
+		List<Map<String, Integer>> articleLabelList = articleDao.selectArticleLabelList();
+		
+		return articleLabelList;
+	}
+
+	@Override
+	public Article[] getArticleItemListByLimitIndexAndSearchWords(int currentPage, int pageScale,
+			String[] searchWords) {
+		
+		int startIndex = (currentPage - 1) * pageScale;
+		
+		List<String> paramList = new ArrayList<>();
+		
+		paramList.add("article_id");
+		paramList.add("article_title");
+		paramList.add("article_author");
+		paramList.add("article_releaseTime");
+		paramList.add("article_label");
+	
+		Article[] articles = articleDao.selectArticleByLimitIndexAndSearchWords(startIndex,pageScale,paramList,"article",searchWords);
+		
+		return articles;
+	}
+
+	@Override
+	public int getMaxPageBySearchWords(int pageScale, String[] searchWords) {
+		
+		int countOfAllArticleBySearchWords = articleDao.selectCountOfArticleBySearchWords("article",searchWords);
+		
+		int maxPage = (int) Math.ceil((double)(countOfAllArticleBySearchWords/pageScale)) + 1;
+		
+		return maxPage;
 	}
 
 	

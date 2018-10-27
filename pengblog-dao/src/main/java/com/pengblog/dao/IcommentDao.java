@@ -3,6 +3,8 @@
  */
 package com.pengblog.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.pengblog.bean.Comment;
@@ -20,5 +22,9 @@ public interface IcommentDao {
 	Comment selectCommentById(int comment_id);
 
 	int insertComment(Comment comment);
+
+	void deleteCommentByArticleId(int article_id);
+
+	List<Comment> selectCommentLastList(int listScale);
 	
 }

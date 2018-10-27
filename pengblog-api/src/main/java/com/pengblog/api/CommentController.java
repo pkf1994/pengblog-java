@@ -6,6 +6,7 @@ package com.pengblog.api;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +120,20 @@ public class CommentController {
 		return "submit comment fail";
 		
 	}
+	
+	@RequestMapping(value="/comment_last.do", produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getCommentLast(int listScale) {
+		
+		List<Comment> retList = commentService.getCommentLastList(listScale);
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(retList);
+		
+		return retJson;
+	}
+	
 }
 
 
