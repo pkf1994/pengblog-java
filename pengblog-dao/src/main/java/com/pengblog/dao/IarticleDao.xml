@@ -84,6 +84,8 @@
 		SELECT COUNT(*) FROM
 			article
 		WHERE
+			article_type =  #{article_type}
+		AND
 			article_releaseTime > #{tempDateBegin}
 		AND
 			#{tempDateEnd} >= article_releaseTime
@@ -138,5 +140,52 @@
 				or 
 				article_label LIKE CONCAT('%',#{word},'%')
 		</foreach>
+	</select>
+	
+	<select id="selectArticleByLimitIndexAndDateBetween" resultType="Article">
+		SELECT
+		<foreach collection="paramList" open="" close="" separator="," item="field">
+				${field}
+		</foreach>
+		FROM
+			article
+		WHERE
+			article_type =  #{article_type}
+		AND
+			article_releaseTime > #{beginDate}
+		AND
+			#{endDate} >= article_releaseTime
+		ORDER BY 
+			article_releaseTime
+		DESC	
+		LIMIT
+			#{startIndex}, #{pageScale}
+	</select>
+	
+	<select id="selectArticleByLimitIndexAndLabel" resultType="Article">
+		SELECT
+		<foreach collection="paramList" open="" close="" separator="," item="field">
+				${field}
+		</foreach>
+		FROM
+			article
+		WHERE
+			article_type = #{article_type}
+		AND
+			article_label = #{article_label}
+		ORDER BY 
+			article_releaseTime
+		DESC	
+		LIMIT
+			#{startIndex}, #{pageScale}
+	</select>
+	
+	<select id="selectCountOfArticleByLabel" resultType="int">
+		SELECT COUNT(*) FROM
+			article
+		WHERE 
+			article_type = #{article_type}
+		AND
+			article_label = #{article_label}
 	</select>
 </mapper>

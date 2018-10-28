@@ -1,5 +1,7 @@
 package com.pengblog.api;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +132,7 @@ public class ArticleController {
 		return retJson;
 	}
 	
-	@RequestMapping(value="/article_search.do",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/article_bysearch.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public Object getArticleListBySearchWords(int currentPage, int pageScale, String searchString) {
 		
@@ -140,11 +142,15 @@ public class ArticleController {
 		
 		int maxPage = articleService.getMaxPageBySearchWords(pageScale, searchWords);
 		
+		int countOfAllArticleBySearchWords = articleService.getCountOfArticleBySearchWords(searchWords);
+		
 		Map<String, Object> retMap = new HashMap<>();
 		
 		retMap.put("maxPage", maxPage);
 		
 		retMap.put("articleList", articles);
+		
+		retMap.put("countOfAllArticleBySearchWords", countOfAllArticleBySearchWords);
 		
 		Gson gson = new Gson();
 		
@@ -153,4 +159,54 @@ public class ArticleController {
 		return retJson;
 	}
 	
+	@RequestMapping(value="/article_byfiling.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getArticleListByFilingDate(int currentPage, int pageScale, String selectedYear, String selectedMonth) {
+		
+		Article[] articles = articleService.getArticleItemListByLimitIndexAndYearAndMonth(currentPage, pageScale, selectedYear, selectedMonth);
+		
+		int maxPage = articleService.getMaxPageByYearAndMonth(pageScale, selectedYear, selectedMonth);
+		
+		int countOfAllArticleByFilingDate = articleService.getCountOfArticleByYearAndMonth(selectedYear, selectedMonth);
+		
+		Map<String, Object> retMap = new HashMap<>();
+		
+		retMap.put("maxPage", maxPage);
+		
+		retMap.put("articleList", articles);
+		
+		retMap.put("countOfAllArticleByFilingDate", countOfAllArticleByFilingDate);
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(retMap);
+		
+		return retJson;
+	}
+	
+	@RequestMapping(value="/article_bylabel.do",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getArticleListByLabel(int currentPage, int pageScale, String article_label) {
+		
+		Article[] articles = articleService.getArticleItemListByLimitIndexAndLabel(currentPage, pageScale, article_label);
+		
+		int maxPage = articleService.getMaxPageByLabel(pageScale, article_label);
+		
+		int countOfAllArticleByLabel = articleService.getCountOfArticleByLabel(article_label);
+		
+		Map<String, Object> retMap = new HashMap<>();
+		
+		retMap.put("maxPage", maxPage);
+		
+		retMap.put("articleList", articles);
+		
+		retMap.put("countOfAllArticleByLabel", countOfAllArticleByLabel);
+		
+		Gson gson = new Gson();
+		
+		String retJson = gson.toJson(retMap);
+		
+		return retJson;
+		
+	}
 }

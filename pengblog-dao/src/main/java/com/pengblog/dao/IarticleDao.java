@@ -43,7 +43,7 @@ public interface IarticleDao {
 
 	void updateArticle(Article handledArticle);
 
-	int selectCountOfArticleByDateBetween(@Param("tempDateBegin")Date tempDateBegin, @Param("tempDateEnd")Date tempDateEnd);
+	int selectCountOfArticleByDateBetween(@Param("article_type")String article_type,@Param("tempDateBegin")Date tempDateBegin, @Param("tempDateEnd")Date tempDateEnd);
 
 	List<Map<String, Integer>> selectArticleLabelList();
 
@@ -55,5 +55,23 @@ public interface IarticleDao {
 
 	int selectCountOfArticleBySearchWords(@Param("article_type")String article_type, 
 										@Param("searchWords")String[] searchWords);
-	
+
+
+	Article[] selectArticleByLimitIndexAndDateBetween(@Param("startIndex")int startIndex, 
+													@Param("pageScale")int pageScale, 
+													@Param("paramList")List<String> paramList,
+													@Param("article_type")String article_type, 
+													@Param("beginDate")Date beginDate, 
+													@Param("endDate")Date endDate);
+
+
+	Article[] selectArticleByLimitIndexAndLabel(@Param("startIndex")int startIndex, 
+												@Param("pageScale")int pageScale, 
+												@Param("paramList")List<String> paramList, 
+												@Param("article_type")String article_type,
+												@Param("article_label")String article_label);
+
+
+	int selectCountOfArticleByLabel(@Param("article_type")String article_type,
+									@Param("article_label")String article_label);
 }

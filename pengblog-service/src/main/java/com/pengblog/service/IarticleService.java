@@ -1,6 +1,7 @@
 package com.pengblog.service;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,21 @@ public interface IarticleService {
 	Article[] getArticleItemListByLimitIndexAndSearchWords(int currentPage, int pageScale, String[] searchWords);
 
 	int getMaxPageBySearchWords(int pageScale, String[] searchWords);
+
+	int getCountOfArticleBySearchWords(String[] searchWords);
+
+	Article[] getArticleItemListByLimitIndexAndYearAndMonth(int currentPage, int pageScale, String selectedYear,
+			String selectedMonth);
+
+	int getMaxPageByYearAndMonth(int pageScale, String selectedYear, String selectedMonth);
+
+	int getCountOfArticleByYearAndMonth(String selectedYear, String selectedMonth);
+
+	Article[] getArticleItemListByLimitIndexAndLabel(int currentPage, int pageScale, String article_label);
+
+	int getMaxPageByLabel(int pageScale, String article_label);
+
+	int getCountOfArticleByLabel(String article_label);
 
 
 

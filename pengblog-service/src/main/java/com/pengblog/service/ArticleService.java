@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -250,7 +248,7 @@ public class ArticleService implements IarticleService{
 			
 			Date tempDateEndY = tempCalendarEndY.getTime();
 			
-			int countY = articleDao.selectCountOfArticleByDateBetween(tempDateBeginY, tempDateEndY);
+			int countY = articleDao.selectCountOfArticleByDateBetween("article", tempDateBeginY, tempDateEndY);
 			
 			if(countY > 0) {
 				
@@ -270,7 +268,7 @@ public class ArticleService implements IarticleService{
 					
 					Date tempDateEndM = tempCalendarEndM.getTime();
 					
-					int countM = articleDao.selectCountOfArticleByDateBetween(tempDateBeginM, tempDateEndM);
+					int countM = articleDao.selectCountOfArticleByDateBetween("article", tempDateBeginM, tempDateEndM);
 					
 					if(countM > 0) {
 						monthList.add(tempCalendarBeginM.get(Calendar.MONTH) + 1);
@@ -321,6 +319,123 @@ public class ArticleService implements IarticleService{
 		int maxPage = (int) Math.ceil((double)(countOfAllArticleBySearchWords/pageScale)) + 1;
 		
 		return maxPage;
+	}
+
+	@Override
+	public int getCountOfArticleBySearchWords(String[] searchWords) {
+		
+		int countOfAllArticleBySearchWords = articleDao.selectCountOfArticleBySearchWords("article",searchWords);
+		
+		return countOfAllArticleBySearchWords;
+	}
+
+	@Override
+	public Article[] getArticleItemListByLimitIndexAndYearAndMonth(int currentPage, int pageScale, String selectedYear,
+			String selectedMonth) {
+		
+		Calendar beginCal = Calendar.getInstance();
+		
+		Calendar endCal = Calendar.getInstance();
+		
+		beginCal.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth) - 1, 1);
+		
+		endCal.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth), 1);
+		
+		Date beginDate = beginCal.getTime();
+		
+		Date endDate = endCal.getTime();
+		
+		int startIndex = (currentPage - 1) * pageScale;
+		
+		List<String> paramList = new ArrayList<>();
+		
+		paramList.add("article_id");
+		paramList.add("article_title");
+		paramList.add("article_author");
+		paramList.add("article_releaseTime");
+		paramList.add("article_label");
+		
+		Article[] articles = articleDao.selectArticleByLimitIndexAndDateBetween(startIndex,pageScale,paramList,"article",beginDate,endDate);
+		
+		return articles;
+	}
+
+	@Override
+	public int getMaxPageByYearAndMonth(int pageScale, String selectedYear, String selectedMonth) {
+		
+		Calendar beginCal = Calendar.getInstance();
+		
+		Calendar endCal = Calendar.getInstance();
+		
+		beginCal.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth) - 1, 1);
+		
+		endCal.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth), 1);
+		
+		Date beginDate = beginCal.getTime();
+		
+		Date endDate = endCal.getTime();
+		
+		int countOfAllArticleByLimitDate = articleDao.selectCountOfArticleByDateBetween("article",beginDate,endDate);
+		
+		int maxPage = (int) Math.ceil((double)(countOfAllArticleByLimitDate/pageScale)) + 1;
+		
+		return maxPage;
+	}
+
+	@Override
+	public int getCountOfArticleByYearAndMonth(String selectedYear, String selectedMonth) {
+		
+		Calendar beginCal = Calendar.getInstance();
+		
+		Calendar endCal = Calendar.getInstance();
+		
+		beginCal.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth) - 1, 1);
+		
+		endCal.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth), 1);
+		
+		Date beginDate = beginCal.getTime();
+		
+		Date endDate = endCal.getTime();
+		
+		int countOfAllArticleByLimitDate = articleDao.selectCountOfArticleByDateBetween("article",beginDate,endDate);
+		
+		return countOfAllArticleByLimitDate;
+	}
+
+	@Override
+	public Article[] getArticleItemListByLimitIndexAndLabel(int currentPage, int pageScale, String article_label) {
+
+		int startIndex = (currentPage - 1) * pageScale;
+		
+		List<String> paramList = new ArrayList<>();
+		
+		paramList.add("article_id");
+		paramList.add("article_title");
+		paramList.add("article_author");
+		paramList.add("article_releaseTime");
+		paramList.add("article_label");
+
+		Article[] articles = articleDao.selectArticleByLimitIndexAndLabel(startIndex, pageScale, paramList, "article", article_label);
+		
+		return articles;
+	}
+
+	@Override
+	public int getMaxPageByLabel(int pageScale, String article_label) {
+		
+		int countOfAllArticleByLabel = articleDao.selectCountOfArticleByLabel("article",article_label);
+		
+		int maxPage = (int) Math.ceil((double)(countOfAllArticleByLabel/pageScale)) + 1;
+		
+		return maxPage;
+	}
+
+	@Override
+	public int getCountOfArticleByLabel(String article_label) {
+		
+		int countOfAllArticleByLabel = articleDao.selectCountOfArticleByLabel("article",article_label);
+		
+		return countOfAllArticleByLabel;
 	}
 
 	
