@@ -4,6 +4,7 @@
 package com.pengblog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.pengblog.bean.Comment;
 
@@ -33,5 +34,7 @@ public interface IcommentService {
 	int saveComment(Comment comment);
 
 	List<Comment> getCommentLastList(int listScale);
+
+	Comment constructComment(Map<String, String> commentData);
 
 }

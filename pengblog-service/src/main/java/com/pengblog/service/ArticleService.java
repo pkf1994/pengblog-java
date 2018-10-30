@@ -303,6 +303,7 @@ public class ArticleService implements IarticleService{
 		paramList.add("article_id");
 		paramList.add("article_title");
 		paramList.add("article_author");
+		paramList.add("article_summary");
 		paramList.add("article_releaseTime");
 		paramList.add("article_label");
 	

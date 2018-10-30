@@ -77,43 +77,15 @@ public class CommentController {
 	@ResponseBody
 	public Object submitComment(@RequestBody Map<String, String> commentData) throws UnsupportedEncodingException {
 		
-		Visitor visitor = new Visitor();
+		Comment comment = commentService.constructComment(commentData);
 		
-		Comment comment = new Comment();
+		Visitor visitor = comment.getComment_author();
 		
-		if(commentData.containsKey("visitor_name") && (commentData.get("visitor_name")!="")) {
-			visitor.setVisitor_name(commentData.get("visitor_name"));
-		}
+		int insertVisitorSuccessful = visitorService.saveVisitor(visitor);
 		
-		if(commentData.containsKey("comment_referComment") && (commentData.get("comment_referComment")!="")) {
-			comment.setComment_referComment(Integer.parseInt(commentData.get("comment_referComment")));
-		}
+		int insertCommentSuccessful = commentService.saveComment(comment);
 		
-		if(commentData.containsKey("comment_content") && (commentData.get("comment_content")!="")) {
-			comment.setComment_content(commentData.get("comment_content"));
-		}
-		
-		if(commentData.containsKey("comment_hostId") && (commentData.get("comment_hostId")!="")) {
-			comment.setComment_hostId(Integer.parseInt(commentData.get("comment_hostId")));
-		}
-		
-		if(commentData.containsKey("visitor_email") && (commentData.get("visitor_email")!="")) {
-			visitor.setVisitor_email(commentData.get("visitor_email"));
-		}
-		
-		if(commentData.containsKey("visitor_siteAddress") && (commentData.get("visitor_siteAddress")!="")) {
-			visitor.setVisitor_siteAddress(commentData.get("visitor_siteAddress"));
-		}
-		
-		comment.setComment_author(visitor);
-		
-		comment.setComment_releaseTime(new Date());
-		
-		int visitor_id = visitorService.saveVisitor(visitor);
-		
-		int comment_id = commentService.saveComment(comment);
-		
-		if(visitor_id == 1 && comment_id == 1) {
+		if(insertVisitorSuccessful == 1 && insertCommentSuccessful == 1) {
 			return "submit comment successful";
 		}
 		

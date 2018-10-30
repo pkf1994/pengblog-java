@@ -15,7 +15,7 @@ public class Comment implements Serializable{
 	
 	private Date comment_releaseTime;
 	
-	private Integer comment_hostId;
+	private Article comment_hostArticle;
 
 	/**
 	 * @return the comment_id
@@ -74,31 +74,23 @@ public class Comment implements Serializable{
 		this.comment_releaseTime = comment_releaseTime;
 	}
 
-	
+	public Article getComment_hostArticle() {
+		return comment_hostArticle;
+	}
+
+	public void setComment_hostArticle(Article comment_hostArticle) {
+		this.comment_hostArticle = comment_hostArticle;
+	}
 
 	public Comment(Integer comment_id, Visitor comment_author, Integer comment_referComment, String comment_content,
-			Date comment_releaseTime, Integer comment_hostId) {
+			Date comment_releaseTime, Article comment_hostArticle) {
 		super();
 		this.comment_id = comment_id;
 		this.comment_author = comment_author;
 		this.comment_referComment = comment_referComment;
 		this.comment_content = comment_content;
 		this.comment_releaseTime = comment_releaseTime;
-		this.comment_hostId = comment_hostId;
-	}
-
-	/**
-	 * @return the comment_hostId
-	 */
-	public Integer getComment_hostId() {
-		return comment_hostId;
-	}
-
-	/**
-	 * @param comment_hostId the comment_hostId to set
-	 */
-	public void setComment_hostId(Integer comment_hostId) {
-		this.comment_hostId = comment_hostId;
+		this.comment_hostArticle = comment_hostArticle;
 	}
 
 	/**

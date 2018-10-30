@@ -9,11 +9,14 @@
 		<result column="comment_referComment" property="comment_referComment"/>
 		<result column="comment_content" property="comment_content"/>
 		<result column="comment_releaseTime" property="comment_releaseTime"/>
-		<result column="comment_hostId" property="comment_hostId"/>
 		<association property="comment_author"
 					javaType="Visitor"
 					select="selectVisitorById"
 					column="comment_author"/>
+		<association property="comment_hostArticle"
+					javaType="com.pengblog.bean.Article"
+					select="selectArticleById"
+					column="comment_hostId"/>
 	</resultMap>
 	
 	<select id="selectVisitorById" resultType="Visitor">
@@ -21,6 +24,17 @@
 			visitor
 		WHERE 
 			visitor_id = #{comment_author}
+	</select>
+	
+	<select id="selectArticleById" resultType="com.pengblog.bean.Article">
+		SELECT 
+			article_id,
+			article_label,
+			article_title
+	 	FROM
+			article
+		WHERE 
+			article_id = #{comment_hostId}
 	</select>
 	
 	<select id="selectCountOfCommentByHostId" resultType="int">
@@ -60,7 +74,7 @@
 				#{comment_referComment}, 
 				#{comment_content}, 
 				#{comment_releaseTime},
-				#{comment_hostId})
+				#{comment_hostArticle.article_id})
 		<selectKey resultType="int" keyProperty="comment_id" order="AFTER">
 			select @@identity
 		</selectKey>
