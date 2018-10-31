@@ -72,13 +72,6 @@ public class CommentService implements IcommentService{
 		return comment_id;
 	}
 
-	@Override
-	public List<Comment> getCommentLastList(int listScale) {
-		
-		List<Comment> retList = commentDao.selectCommentLastList(listScale);
-		
-		return retList;
-	}
 
 	@Override
 	public Comment constructComment(Map<String, String> commentData) {
@@ -123,4 +116,42 @@ public class CommentService implements IcommentService{
 		
 		return comment;
 	}
+
+	@Override
+	public List<Comment> getCommentLastListByLimitIndex(int currentPage, int pageScale) {
+		
+		int startIndex = (currentPage - 1) * pageScale;
+		
+		List<Comment> comments = commentDao.selectCommentLastListByLimitIndex(startIndex, pageScale);
+		
+		return comments;
+	}
+
+	@Override
+	public int getMaxPageOfCommentLast(int pageScale) {
+
+		int countOfComment = commentDao.selectCountOfComment();
+		
+		int maxPage = (int) Math.ceil((double)(countOfComment/pageScale)) + 1;
+				
+		return maxPage;
+	}
+
+	@Override
+	public int getCountOfCommentByArticleId(int article_id) {
+		
+		int count = commentDao.selectCountOfCommentByHostId(article_id);
+		
+		return count;
+	}
+
+	@Override
+	public void deleteCommentById(int comment_id) {
+		
+		commentDao.deleteCommentById(comment_id);
+		
+	}
+
+
+
 }

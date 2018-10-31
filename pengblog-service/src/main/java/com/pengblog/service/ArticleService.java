@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -118,7 +120,7 @@ public class ArticleService implements IarticleService{
 			
 			article.setArticle_content(articleData.get("article_content"));
 			
-			String article_content = articleData.get("article_content");
+			String article_content = article.getArticle_content();
 			
 			Document doc = Jsoup.parse(article_content);
 			
@@ -138,16 +140,6 @@ public class ArticleService implements IarticleService{
 				article.setArticle_summary(article_summary);
 			}
 			
-			if(doc.select("img[src]").size() > 0) {
-				
-				String article_firstImageUrl = doc.select("img[src]").first().attr("src");
-				
-				String article_previewImageUrl = article_firstImageUrl + "?imageView2/1/w/200/h/150/interlace/1/q/53";
-				
-				article.setArticle_previewImageUrl(article_previewImageUrl);
-				
-			}
-			
 		}
 		
 		if(articleData.containsKey("article_type") && (articleData.get("article_type")!="")) {
@@ -163,12 +155,12 @@ public class ArticleService implements IarticleService{
 		
 		List<String> imgUrls = MyHtmlUtil.extractImageUrlFromArticleContent(article.getArticle_content());
 		
-		List<String> handledImgUrls = qiniuService.handleImageUrl(imgUrls);
+		List<String> handledImgUrls = qiniuService.handleImageUrl(imgUrls, article.getArticle_id());
 		
 		String article_content = article.getArticle_content();
 		
 		for(int i = 0; i < imgUrls.size(); i++) {
-			article_content.replace(imgUrls.get(i), handledImgUrls.get(i));
+			article_content = article_content.replace(imgUrls.get(i), handledImgUrls.get(i));
 		}
 		
 		article.setArticle_content(article_content);
@@ -212,10 +204,29 @@ public class ArticleService implements IarticleService{
 
 	@Override
 	public void deleteArticleById(int article_id) {
+		Article article = getArticleById(article_id);
+		
+		String article_content = article.getArticle_content();
 		
 		articleDao.deleteArticleById(article_id);
 		
 		commentDao.deleteCommentByArticleId(article_id);
+		
+		Document doc = Jsoup.parse(article_content);
+		
+		List<String> imgUrlList = new ArrayList<>();
+		
+		if(doc.select("img[src]").size() > 0) {
+			
+			Elements els = doc.select("img[src]");
+			
+			for(Element el: els) {
+				imgUrlList.add(el.attr("src"));
+			}
+			
+		}
+		
+		qiniuService.deleteImage(imgUrlList);
 		
 	}
 
@@ -285,7 +296,7 @@ public class ArticleService implements IarticleService{
 
 
 	@Override
-	public List<Map<String, Integer>> getarticleLabelList() {
+	public List<Map<String, Integer>> getArticleLabelList() {
 
 		List<Map<String, Integer>> articleLabelList = articleDao.selectArticleLabelList();
 		
@@ -437,6 +448,43 @@ public class ArticleService implements IarticleService{
 		int countOfAllArticleByLabel = articleDao.selectCountOfArticleByLabel("article",article_label);
 		
 		return countOfAllArticleByLabel;
+	}
+
+	@Override
+	public Article handlePreviewImage(Article article) {
+		
+		String article_content = article.getArticle_content();
+		
+		Document doc = Jsoup.parse(article_content);
+		
+		String article_content_text = doc.body().text();
+		
+		int length = article_content_text.length();
+		
+		if(length <= 200) {
+			
+			String article_summary = article_content_text;
+			
+			article.setArticle_summary(article_summary);
+			
+		}else {
+			String article_summary = article_content_text.substring(0,200);
+			
+			article.setArticle_summary(article_summary);
+		}
+		
+		if(doc.select("img[src]").size() > 0) {
+			
+			String article_firstImageUrl = doc.select("img[src]").first().attr("src");
+			
+			String article_previewImageUrl = article_firstImageUrl + "?imageView2/1/w/200/h/150/interlace/1/q/53";
+			
+			article.setArticle_previewImageUrl(article_previewImageUrl);
+			
+		}
+		
+		return article;
+		
 	}
 
 	

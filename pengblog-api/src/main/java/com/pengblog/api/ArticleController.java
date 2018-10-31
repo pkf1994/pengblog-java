@@ -68,14 +68,16 @@ public class ArticleController {
 		
 		Article article = articleService.constructArticle(articleData);
 		
+		if(article.getArticle_id() == 0) {
+			articleService.saveArticle(article);
+		}
+		
 		Article handledArticle = articleService.handleImageUrl(article);
 		
-		if(handledArticle.getArticle_id() != 0) {
-			articleService.updateArticle(handledArticle);
-		}else {
-			articleService.saveArticle(handledArticle);
-		}
-			
+		articleService.handlePreviewImage(handledArticle);
+		
+		articleService.updateArticle(handledArticle);
+		
 		return handledArticle.getArticle_id();
 	}
 	
@@ -100,7 +102,6 @@ public class ArticleController {
 	@ResponseBody
 	public Object deleteArticle(int article_id) {
 		
-		
 		articleService.deleteArticleById(article_id);
 		
 		return "delete success";
@@ -123,7 +124,7 @@ public class ArticleController {
 	@ResponseBody
 	public Object getArticleLabelList() {
 		
-		List<Map<String, Integer>> articleLabelList = articleService.getarticleLabelList();
+		List<Map<String, Integer>> articleLabelList = articleService.getArticleLabelList();
 		
 		Gson gson = new Gson();
 		

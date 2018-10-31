@@ -49,7 +49,7 @@ public interface IarticleService {
 	Map<Integer, Object> getarticleFiling();
 
 
-	List<Map<String, Integer>> getarticleLabelList();
+	List<Map<String, Integer>> getArticleLabelList();
 
 	Article[] getArticleItemListByLimitIndexAndSearchWords(int currentPage, int pageScale, String[] searchWords);
 
@@ -69,6 +69,9 @@ public interface IarticleService {
 	int getMaxPageByLabel(int pageScale, String article_label);
 
 	int getCountOfArticleByLabel(String article_label);
+
+	Article handlePreviewImage(Article handledArticle);
+
 
 
 

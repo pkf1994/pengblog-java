@@ -33,8 +33,14 @@ public interface IcommentService {
 
 	int saveComment(Comment comment);
 
-	List<Comment> getCommentLastList(int listScale);
-
 	Comment constructComment(Map<String, String> commentData);
+
+	List<Comment> getCommentLastListByLimitIndex(int startIndex, int pageScale);
+
+	int getMaxPageOfCommentLast(int pageScale);
+
+	int getCountOfCommentByArticleId(int article_id);
+
+	void deleteCommentById(int comment_id);
 
 }

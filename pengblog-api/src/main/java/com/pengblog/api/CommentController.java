@@ -95,17 +95,42 @@ public class CommentController {
 	
 	@RequestMapping(value="/comment_last.do", produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getCommentLast(int listScale) {
+	public Object getCommentLast(int currentPage, int pageScale) {
 		
-		List<Comment> retList = commentService.getCommentLastList(listScale);
+		List<Comment> comments = commentService.getCommentLastListByLimitIndex(currentPage, pageScale);
+		
+		int maxPage = commentService.getMaxPageOfCommentLast(pageScale);
+		
+		Map<String, Object> retMap = new HashMap<>();
+	
+		retMap.put("commentList", comments);
+		
+		retMap.put("maxPage", maxPage);
 		
 		Gson gson = new Gson();
 		
-		String retJson = gson.toJson(retList);
+		String retJson = gson.toJson(retMap);
 		
 		return retJson;
 	}
 	
+	@RequestMapping(value="/comment_count.do", produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object getCommentCount(int article_id) {
+		
+		int count = commentService.getCountOfCommentByArticleId(article_id);
+		
+		return count;
+	}
+	
+	@RequestMapping(value="/comment_delete.do", produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public Object deleteCommentById(int comment_id) {
+		
+		commentService.deleteCommentById(comment_id);
+		
+		return "delete comment successful";
+	}
 }
 
 

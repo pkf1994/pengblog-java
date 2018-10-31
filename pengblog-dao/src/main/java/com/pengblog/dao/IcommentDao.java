@@ -25,6 +25,11 @@ public interface IcommentDao {
 
 	void deleteCommentByArticleId(int article_id);
 
-	List<Comment> selectCommentLastList(int listScale);
+	List<Comment> selectCommentLastListByLimitIndex(@Param("startIndex")int startIndex, 
+													@Param("pageScale")int pageScale);
+
+	int selectCountOfComment();
+
+	void deleteCommentById(int comment_id);
 	
 }

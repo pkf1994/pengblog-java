@@ -13,6 +13,8 @@
 			article
 		WHERE
 			article_type =  #{article_type}
+		AND
+			isdeleted = 0
 		ORDER BY 
 			article_releaseTime
 		DESC	
@@ -25,6 +27,8 @@
 			article
 		WHERE 
 			article_type = #{article_type}
+		AND
+			isdeleted = 0
 	</select>
 	
 	<select id="selectArticleById" resultType="Article">
@@ -57,12 +61,14 @@
 		</selectKey>
 	</insert>
 	
-	<delete id="deleteArticleById">
-		DELETE FROM
+	<update id="deleteArticleById">
+		UPDATE 
 			article
+		SET
+			isdeleted = 1
 		WHERE
 			article_id = #{article_id}
-	</delete>
+	</update>
 	
 	<update id="updateArticle">
 		UPDATE 
@@ -89,6 +95,8 @@
 			article_releaseTime > #{tempDateBegin}
 		AND
 			#{tempDateEnd} >= article_releaseTime
+		AND
+			isdeleted = 0
 	</select>
 
 	<select id="selectArticleLabelList" resultType="java.util.HashMap">  
@@ -99,6 +107,8 @@
        		article
    		WHERE
    			 article_type = 'article'
+ 		AND
+ 			isdeleted = 0
 	 	GROUP BY
 	 		article_label
 	</select>
@@ -112,6 +122,8 @@
 			article
 		WHERE
 			article_type =  #{article_type}
+		AND
+			isdeleted = 0
 		AND
 		<foreach collection="searchWords" open="" close="" separator="or" item="word">
 				article_title LIKE  CONCAT('%',#{word},'%') 
@@ -132,6 +144,8 @@
 			article
 		WHERE 
 			article_type =  #{article_type}
+		AND
+			isdeleted = 0
 		AND
 		<foreach collection="searchWords" open="" close="" separator="or" item="word">
 				article_title LIKE  CONCAT('%',#{word},'%') 
@@ -155,6 +169,8 @@
 			article_releaseTime > #{beginDate}
 		AND
 			#{endDate} >= article_releaseTime
+		AND
+			isdeleted = 0
 		ORDER BY 
 			article_releaseTime
 		DESC	
@@ -173,6 +189,8 @@
 			article_type = #{article_type}
 		AND
 			article_label = #{article_label}
+		AND
+			isdeleted = 0
 		ORDER BY 
 			article_releaseTime
 		DESC	
@@ -187,5 +205,7 @@
 			article_type = #{article_type}
 		AND
 			article_label = #{article_label}
+		AND
+			isdeleted = 0
 	</select>
 </mapper>

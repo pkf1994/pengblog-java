@@ -24,6 +24,8 @@
 			visitor
 		WHERE 
 			visitor_id = #{comment_author}
+		AND
+			isdeleted = 0
 	</select>
 	
 	<select id="selectArticleById" resultType="com.pengblog.bean.Article">
@@ -42,6 +44,8 @@
 			comment
 		WHERE 
 		   comment_hostid = #{hostId}
+	  	AND
+			isdeleted = 0
 	</select>
 	
 	<select id="selectCommentListByLimitIndex" resultMap="commentMapper">
@@ -49,6 +53,8 @@
 			comment
 		WHERE
 			comment_hostid = #{hostId}
+		AND
+			isdeleted = 0
 		ORDER BY 
 			comment_releaseTime
 		DESC	
@@ -80,20 +86,40 @@
 		</selectKey>
 	</insert>
 	
-	<delete id="deleteCommentByArticleId">
-		DELETE FROM
+	<update id="deleteCommentByArticleId">
+		UPDATE
 			comment
+		SET
+			isdeleted = 1
 		WHERE
 			comment_hostId = #{comment_hostId}
-	</delete>
+	</update>
 	
-	<select id="selectCommentLastList" resultMap="commentMapper">
+	<update id="deleteCommentById">
+		UPDATE
+			comment
+		SET
+			isdeleted = 1
+		WHERE
+			comment_id = #{comment_id}
+	</update>
+	
+	<select id="selectCommentLastListByLimitIndex" resultMap="commentMapper">
 		SELECT * FROM
 			comment
+		WHERE
+			isdeleted = 0
 		ORDER BY 
 			comment_releaseTime
 		DESC	
 		LIMIT
-			0, #{listScale}
+			#{startIndex}, #{pageScale}
+	</select>
+	
+	<select id="selectCountOfComment" resultType="int">
+		SELECT COUNT(*) FROM
+			comment
+		WHERE
+			isdeleted = 0
 	</select>
 </mapper>
