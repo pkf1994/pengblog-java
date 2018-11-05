@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.peng.annotation.RequireToken;
 import com.pengblog.bean.Comment;
 import com.pengblog.bean.Visitor;
 import com.pengblog.service.IcommentService;
@@ -123,6 +124,7 @@ public class CommentController {
 		return count;
 	}
 	
+	@RequireToken
 	@RequestMapping(value="/comment_delete.do", produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public Object deleteCommentById(int comment_id) {

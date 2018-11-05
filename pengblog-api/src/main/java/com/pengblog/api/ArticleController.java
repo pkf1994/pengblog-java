@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.peng.annotation.RequireToken;
 import com.pengblog.bean.Article;
 import com.pengblog.service.IarticleService;
 
@@ -62,6 +63,7 @@ public class ArticleController {
 		return retJson;
 	}
 	
+	@RequireToken
 	@RequestMapping(value="/upload_article.do", produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public Object uploadArticle(@RequestBody Map<String,String> articleData) {
@@ -81,6 +83,7 @@ public class ArticleController {
 		return handledArticle.getArticle_id();
 	}
 	
+	@RequireToken
 	@RequestMapping(value="/draft_list.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public Object getDraftList(int currentPage,
@@ -98,6 +101,7 @@ public class ArticleController {
 		return retJson;
 	}
 	
+	@RequireToken
 	@RequestMapping(value="/delete_article.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public Object deleteArticle(int article_id) {
