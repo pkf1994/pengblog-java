@@ -108,11 +108,11 @@ public class ArticleService implements IarticleService{
 			article.setArticle_title(articleData.get("article_title"));
 		}
 		
-		if(articleData.containsKey("article_author") && (articleData.get("article_author")!="")) {
+		if(articleData.containsKey("article_author")) {
 			article.setArticle_author(articleData.get("article_author"));
 		}
 		
-		if(articleData.containsKey("article_label") && (articleData.get("article_label")!="")) {
+		if(articleData.containsKey("article_label")) {
 			article.setArticle_label(articleData.get("article_label"));
 		}
 		
