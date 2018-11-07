@@ -18,7 +18,7 @@ public interface IarticleService {
 	 * @param pageScale
 	 * @return
 	 */
-	Article[] getArticleSummaryList(int currentPage, int pageScale);
+	Article[] getArticleSummaryList(int startIndex, int pageScale);
 
 	/**
 	 * @param pageScale
@@ -38,7 +38,7 @@ public interface IarticleService {
 
 	Article handleImageUrl(Article article);
 
-	Article[] getDraftList(int currentPage, int pageScale);
+	Article[] getDraftList(int startIndex, int pageScale);
 
 	int getMaxPageOfDraft(int pageScale);
 
@@ -51,20 +51,20 @@ public interface IarticleService {
 
 	List<Map<String, Integer>> getArticleLabelList();
 
-	Article[] getArticleItemListByLimitIndexAndSearchWords(int currentPage, int pageScale, String[] searchWords);
+	Article[] getArticleItemListByLimitIndexAndSearchWords(int startIndex, int pageScale, String[] searchWords);
 
 	int getMaxPageBySearchWords(int pageScale, String[] searchWords);
 
 	int getCountOfArticleBySearchWords(String[] searchWords);
 
-	Article[] getArticleItemListByLimitIndexAndYearAndMonth(int currentPage, int pageScale, String selectedYear,
+	Article[] getArticleItemListByLimitIndexAndYearAndMonth(int startIndex, int pageScale, String selectedYear,
 			String selectedMonth);
 
 	int getMaxPageByYearAndMonth(int pageScale, String selectedYear, String selectedMonth);
 
 	int getCountOfArticleByYearAndMonth(String selectedYear, String selectedMonth);
 
-	Article[] getArticleItemListByLimitIndexAndLabel(int currentPage, int pageScale, String article_label);
+	Article[] getArticleItemListByLimitIndexAndLabel(int startIndex, int pageScale, String article_label);
 
 	int getMaxPageByLabel(int pageScale, String article_label);
 
@@ -72,8 +72,7 @@ public interface IarticleService {
 
 	Article handlePreviewImage(Article handledArticle);
 
-
-
+	int getCountOfArticle(String article_type);
 
 
 }

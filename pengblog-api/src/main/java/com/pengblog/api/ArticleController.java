@@ -34,17 +34,20 @@ public class ArticleController {
 	
 	@RequestMapping(value="/article_summary.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getArticleSummaryList(int currentPage,
+	public Object getArticleSummaryList(int startIndex,
 										int pageScale) {
 		
-		Article[] articleList = articleService.getArticleSummaryList(currentPage,pageScale);
+		Article[] articleList = articleService.getArticleSummaryList(startIndex, pageScale);
+		
+		int count = articleService.getCountOfArticle("article");
 		
 		int maxPage = articleService.getMaxPage(pageScale);
 		
 		Gson gson = new Gson();
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("articleList", articleList);
-		ret.put("maxPage",maxPage);
+		ret.put("count",count);
+		ret.put("maxPage", maxPage);
 		String retJson = gson.toJson(ret);
 		
 		return retJson;
@@ -86,16 +89,19 @@ public class ArticleController {
 	@RequireToken
 	@RequestMapping(value="/draft_list.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getDraftList(int currentPage,
+	public Object getDraftList(int startIndex,
 								int pageScale) {
-		Article[] articleList = articleService.getDraftList(currentPage,pageScale);
+		Article[] articleList = articleService.getDraftList(startIndex,pageScale);
+		
+		int count = articleService.getCountOfArticle("draft");
 		
 		int maxPage = articleService.getMaxPageOfDraft(pageScale);
 		
 		Gson gson = new Gson();
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("articleList", articleList);
-		ret.put("maxPage",maxPage);
+		ret.put("count",count);
+		ret.put("maxPage", maxPage);
 		String retJson = gson.toJson(ret);
 		
 		return retJson;
@@ -139,11 +145,11 @@ public class ArticleController {
 	
 	@RequestMapping(value="/article_bysearch.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getArticleListBySearchWords(int currentPage, int pageScale, String searchString) {
+	public Object getArticleListByLimitIndexAndSearchWords(int startIndex, int pageScale, String searchString) {
 		
 		String[] searchWords = searchString.split("\\s+");
 		
-		Article[] articles = articleService.getArticleItemListByLimitIndexAndSearchWords(currentPage, pageScale, searchWords);
+		Article[] articles = articleService.getArticleItemListByLimitIndexAndSearchWords(startIndex, pageScale, searchWords);
 		
 		int maxPage = articleService.getMaxPageBySearchWords(pageScale, searchWords);
 		
@@ -166,9 +172,9 @@ public class ArticleController {
 	
 	@RequestMapping(value="/article_byfiling.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getArticleListByFilingDate(int currentPage, int pageScale, String selectedYear, String selectedMonth) {
+	public Object getArticleListByLimitIndexAndFilingDate(int startIndex, int pageScale, String selectedYear, String selectedMonth) {
 		
-		Article[] articles = articleService.getArticleItemListByLimitIndexAndYearAndMonth(currentPage, pageScale, selectedYear, selectedMonth);
+		Article[] articles = articleService.getArticleItemListByLimitIndexAndYearAndMonth(startIndex, pageScale, selectedYear, selectedMonth);
 		
 		int maxPage = articleService.getMaxPageByYearAndMonth(pageScale, selectedYear, selectedMonth);
 		
@@ -191,9 +197,9 @@ public class ArticleController {
 	
 	@RequestMapping(value="/article_bylabel.do",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getArticleListByLabel(int currentPage, int pageScale, String article_label) {
+	public Object getArticleListByLimitIndexAndLabel(int startIndex, int pageScale, String article_label) {
 		
-		Article[] articles = articleService.getArticleItemListByLimitIndexAndLabel(currentPage, pageScale, article_label);
+		Article[] articles = articleService.getArticleItemListByLimitIndexAndLabel(startIndex, pageScale, article_label);
 		
 		int maxPage = articleService.getMaxPageByLabel(pageScale, article_label);
 		

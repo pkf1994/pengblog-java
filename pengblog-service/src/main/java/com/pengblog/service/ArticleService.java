@@ -20,6 +20,7 @@ import com.pengblog.bean.Article;
 import com.pengblog.dao.IarticleDao;
 import com.pengblog.dao.IcommentDao;
 import com.pengblog.utils.ArticleFields;
+import com.pengblog.utils.LogUtil;
 import com.pengblog.utils.MyHtmlUtil;
 
 /**
@@ -45,9 +46,7 @@ public class ArticleService implements IarticleService{
 	 * @see com.pengblog.service.IarticleService#getArticleSummary(int, int)
 	 */
 	@Transactional
-	public Article[] getArticleSummaryList(int currentPage, int pageScale) {
-		
-		int startIndex = (currentPage - 1) * pageScale;
+	public Article[] getArticleSummaryList(int startIndex, int pageScale) {
 		
 		List<String> paramList = new ArrayList<>();
 		
@@ -172,13 +171,14 @@ public class ArticleService implements IarticleService{
 	public int saveArticle(Article article) {
 		
 		int article_id = articleDao.insertArticle(article);
-		
+		LogUtil.logInfo(ArticleService.class, "==============infoBegin=============");
+		LogUtil.logInfo(ArticleService.class, "存储文章");
+		LogUtil.logInfo(ArticleService.class, "==============infoEnd=============");
 		return article_id;
 	}
 
 	@Override
-	public Article[] getDraftList(int currentPage, int pageScale) {
-		int startIndex = (currentPage - 1) * pageScale;
+	public Article[] getDraftList(int startIndex, int pageScale) {
 		
 		List<String> paramList = new ArrayList<>();
 		
@@ -304,10 +304,9 @@ public class ArticleService implements IarticleService{
 	}
 
 	@Override
-	public Article[] getArticleItemListByLimitIndexAndSearchWords(int currentPage, int pageScale,
+	public Article[] getArticleItemListByLimitIndexAndSearchWords(int startIndex, int pageScale,
 			String[] searchWords) {
 		
-		int startIndex = (currentPage - 1) * pageScale;
 		
 		List<String> paramList = new ArrayList<>();
 		
@@ -342,7 +341,7 @@ public class ArticleService implements IarticleService{
 	}
 
 	@Override
-	public Article[] getArticleItemListByLimitIndexAndYearAndMonth(int currentPage, int pageScale, String selectedYear,
+	public Article[] getArticleItemListByLimitIndexAndYearAndMonth(int startIndex, int pageScale, String selectedYear,
 			String selectedMonth) {
 		
 		Calendar beginCal = Calendar.getInstance();
@@ -356,9 +355,7 @@ public class ArticleService implements IarticleService{
 		Date beginDate = beginCal.getTime();
 		
 		Date endDate = endCal.getTime();
-		
-		int startIndex = (currentPage - 1) * pageScale;
-		
+				
 		List<String> paramList = new ArrayList<>();
 		
 		paramList.add("article_id");
@@ -415,10 +412,8 @@ public class ArticleService implements IarticleService{
 	}
 
 	@Override
-	public Article[] getArticleItemListByLimitIndexAndLabel(int currentPage, int pageScale, String article_label) {
+	public Article[] getArticleItemListByLimitIndexAndLabel(int startIndex, int pageScale, String article_label) {
 
-		int startIndex = (currentPage - 1) * pageScale;
-		
 		List<String> paramList = new ArrayList<>();
 		
 		paramList.add("article_id");
@@ -485,6 +480,21 @@ public class ArticleService implements IarticleService{
 		
 		return article;
 		
+	}
+
+	
+	public int getCountOfArticle() {
+		
+		return getCountOfArticle("article");
+		
+	}
+
+	@Override
+	public int getCountOfArticle(String article_type) {
+		
+		int countOfAllArticle = articleDao.selectCountOfArticle("article");
+		
+		return countOfAllArticle;
 	}
 
 	
