@@ -46,7 +46,7 @@ public interface IarticleService {
 
 	void updateArticle(Article handledArticle);
 
-	Map<Integer, Object> getarticleFiling();
+	Map<Integer, Object> getArticleFiling();
 
 
 	List<Map<String, Integer>> getArticleLabelList();

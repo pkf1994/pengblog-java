@@ -25,7 +25,7 @@ public interface IcommentService {
 	 * @param pageScale
 	 * @return
 	 */
-	Comment[] getCommentList(int hostid, int currentPage, int pageScale);
+	Comment[] getCommentList(int hostid, int startIndex, int pageScale);
 
 	int getCountOfComment(int article_id);
 

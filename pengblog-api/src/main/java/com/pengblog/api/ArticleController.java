@@ -121,7 +121,7 @@ public class ArticleController {
 	@ResponseBody
 	public Object getArticleFiling() {
 		
-		Map<Integer,Object> articleFilingMap = articleService.getarticleFiling();
+		Map<Integer,Object> articleFilingMap = articleService.getArticleFiling();
 		
 		Gson gson = new Gson();
 		

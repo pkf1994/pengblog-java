@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,6 +31,8 @@ import com.pengblog.utils.MyHtmlUtil;
  */
 @Service("articleService")
 public class ArticleService implements IarticleService{
+	
+	private static final Logger logger = LogManager.getLogger(ArticleService.class);
 	
 	@Autowired
 	private IarticleDao articleDao;
@@ -171,9 +175,11 @@ public class ArticleService implements IarticleService{
 	public int saveArticle(Article article) {
 		
 		int article_id = articleDao.insertArticle(article);
-		LogUtil.logInfo(ArticleService.class, "==============infoBegin=============");
-		LogUtil.logInfo(ArticleService.class, "存储文章");
-		LogUtil.logInfo(ArticleService.class, "==============infoEnd=============");
+		
+		logger.info(LogUtil.infoBegin);
+		logger.info("存储文章: " + article.getArticle_title() + "-" + article.getArticle_author() + "-" + article.getArticle_label());
+		logger.info(LogUtil.infoEnd);
+		
 		return article_id;
 	}
 
@@ -210,6 +216,10 @@ public class ArticleService implements IarticleService{
 		
 		articleDao.deleteArticleById(article_id);
 		
+		logger.info(LogUtil.infoBegin);
+		logger.info("删除文章: " + article.getArticle_title() + "-" + article.getArticle_author() + "-" + article.getArticle_label());
+		logger.info(LogUtil.infoEnd);
+		
 		commentDao.deleteCommentByArticleId(article_id);
 		
 		Document doc = Jsoup.parse(article_content);
@@ -228,16 +238,22 @@ public class ArticleService implements IarticleService{
 		
 		qiniuService.deleteImage(imgUrlList);
 		
-	}
-
-	@Override
-	public void updateArticle(Article handledArticle) {
-		articleDao.updateArticle(handledArticle);
 		
 	}
 
 	@Override
-	public Map<Integer, Object> getarticleFiling() {
+	public void updateArticle(Article handledArticle) {
+		
+		articleDao.updateArticle(handledArticle);
+		
+		logger.info(LogUtil.infoBegin);
+		logger.info("com.pengblog.service.ArticleService", "更新文章: " + handledArticle.getArticle_title() + "-" + handledArticle.getArticle_author() + "-" + handledArticle.getArticle_label());
+		logger.info(LogUtil.infoEnd);
+		
+	}
+
+	@Override
+	public Map<Integer, Object> getArticleFiling() {
 		
 		Map<Integer, Object> retMap = new HashMap<>();
 		

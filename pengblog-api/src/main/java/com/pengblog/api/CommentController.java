@@ -41,13 +41,13 @@ public class CommentController {
 
 	@RequestMapping(value="/comment_list.do", produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public Object getCommentList(int article_id, int currentPage, int pageScale) {
+	public Object getCommentList(int article_id, int startIndex, int pageScale) {
 		
 		int maxPage = commentService.getMaxPage(article_id, pageScale);
 		
 		int countOfComment = commentService.getCountOfComment(article_id);
 		
-		Comment[] commentList = commentService.getCommentList(article_id, currentPage, pageScale);
+		Comment[] commentList = commentService.getCommentList(article_id, startIndex, pageScale);
 		
 		Gson gson = new Gson();
 		Map<String,Object> ret = new HashMap<>();
@@ -82,12 +82,16 @@ public class CommentController {
 		
 		Visitor visitor = comment.getComment_author();
 		
-		int insertVisitorSuccessful = visitorService.saveVisitor(visitor);
+		visitor = visitorService.saveVisitor(visitor);
+		
+		comment.setComment_author(visitor);
 		
 		int insertCommentSuccessful = commentService.saveComment(comment);
 		
-		if(insertVisitorSuccessful == 1 && insertCommentSuccessful == 1) {
+		if(insertCommentSuccessful == 1) {
+			
 			return "submit comment successful";
+			
 		}
 		
 		return "submit comment fail";
