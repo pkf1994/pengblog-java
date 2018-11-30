@@ -44,8 +44,10 @@ public class ArticleService implements IarticleService{
 	@Qualifier("qiniuService")
 	private IqiniuService qiniuService;
 	
+	@Autowired
+	@Qualifier("txCosService")
+	private ItxCosService txCosService;
 	
-
 	/* (non-Javadoc)
 	 * @see com.pengblog.service.IarticleService#getArticleSummary(int, int)
 	 */
@@ -158,7 +160,9 @@ public class ArticleService implements IarticleService{
 		
 		List<String> imgUrls = MyHtmlUtil.extractImageUrlFromArticleContent(article.getArticle_content());
 		
-		List<String> handledImgUrls = qiniuService.handleImageUrl(imgUrls, article.getArticle_id());
+		//List<String> handledImgUrls = qiniuService.handleImageUrl(imgUrls, article.getArticle_id());
+		
+		List<String> handledImgUrls = txCosService.transferTempImageUrlList(imgUrls, article.getArticle_id());
 		
 		String article_content = article.getArticle_content();
 		
@@ -236,7 +240,8 @@ public class ArticleService implements IarticleService{
 			
 		}
 		
-		qiniuService.deleteImage(imgUrlList);
+		//qiniuService.deleteImage(imgUrlList);
+		txCosService.deleteImage(imgUrlList, article_id);
 		
 		
 	}
