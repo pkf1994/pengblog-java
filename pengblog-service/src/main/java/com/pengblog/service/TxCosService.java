@@ -42,7 +42,11 @@ public class TxCosService implements ItxCosService{
 	
 	private static Properties properties;
 	
-	private static String urlPath;
+	private static String cosDomainName;
+	
+	private static String clDomainName;
+	
+	private static String thumbnail;
 	
 	static {
 		
@@ -60,11 +64,17 @@ public class TxCosService implements ItxCosService{
 		
 		region = properties.getProperty("region");
 		
+		thumbnail = properties.getProperty("thumbnail");
+		
+		cosDomainName = properties.getProperty("cosDomainName");
+		
+		clDomainName = properties.getProperty("clDomainName");
+		
 		cred = new BasicCOSCredentials(secretId, secretKey);	
 		
 		clientConfig = new ClientConfig(new Region(region));
 		
-		//通过存储一个目录类“亚当”，来获取COSURL的path部分，以下部分代码参考官方SDK示例
+		/*//通过存储一个目录类“亚当”，来获取COSURL的path部分，以下部分代码参考官方SDK示例
 		COSClient cosClient = new COSClient(cred, clientConfig);
 		
 		InputStream input = new ByteArrayInputStream(new byte[0]);
@@ -84,7 +94,7 @@ public class TxCosService implements ItxCosService{
 		
 		urlPath = "https://" + imageUrl.getHost() + "/";
 		
-		cosClient.shutdown();
+		cosClient.shutdown();*/
 		
 	}
 
@@ -126,21 +136,21 @@ public class TxCosService implements ItxCosService{
 			
 			handledImgUrls.add(imgUrl);
 			
-			if(imgUrl.indexOf(urlPath) >= 0) {
+			if(imgUrl.indexOf(cosDomainName) >= 0) {
 				
-				String tempImgName = imgUrl.replace(urlPath, "");
+				String tempImgName = imgUrl.replace(cosDomainName, "");
 				
 				String imgName = tempImgName.replace("temp/", article_id + "/");
 				
 				this.moveImage(blogImageBucket, tempImgName, blogImageBucket, imgName);
 				
 				logger.info(LogUtil.infoBegin);
-				logger.info("转临时图片为正式图片: " + urlPath + tempImgName + "=>" + urlPath + imgName);
+				logger.info("转临时图片为正式图片: " + cosDomainName + tempImgName + "=>" + cosDomainName + imgName);
 				logger.info( LogUtil.infoEnd);
 				
 				handledImgUrls.remove(handledImgUrls.size() - 1);
 				
-				handledImgUrls.add(urlPath + imgName);
+				handledImgUrls.add(cosDomainName + imgName);
 				
 			}
 		}
@@ -153,6 +163,10 @@ public class TxCosService implements ItxCosService{
 	private void moveImage(String sourceBucketName, String sourceKey, String destinationBucketName, String destinationKey) {
 		
 		COSClient cosClient = new COSClient(cred, clientConfig);
+		
+		if(sourceBucketName == destinationBucketName && sourceKey == destinationKey) {
+			return;
+		}
 		
 		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(sourceBucketName, sourceKey, destinationBucketName, destinationKey);
 		
@@ -173,9 +187,9 @@ public class TxCosService implements ItxCosService{
 		
 		for(String imgUrl: imgUrlList) {
 			
-			if(imgUrl.indexOf(urlPath) >= 0) {
+			if(imgUrl.indexOf(cosDomainName) >= 0) {
 				
-				String key = imgUrl.replace(urlPath, "");
+				String key = imgUrl.replace(cosDomainName, "");
 				
 				if(key.indexOf(article_id + "/") >= 0) {
 					
@@ -189,6 +203,15 @@ public class TxCosService implements ItxCosService{
 		
 		cosClient.shutdown();
 		
+	}
+
+	@Override
+	public String thumbnail(String article_firstImageUrl) {
+		// TODO Auto-generated method stub
+		if(article_firstImageUrl.indexOf(cosDomainName) < 0) {
+			return article_firstImageUrl;
+		}
+		return article_firstImageUrl.replace(cosDomainName, clDomainName) + thumbnail;
 	}
 
 }

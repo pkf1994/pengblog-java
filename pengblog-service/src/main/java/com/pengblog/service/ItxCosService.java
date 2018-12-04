@@ -11,4 +11,6 @@ public interface ItxCosService {
 
 	void deleteImage(List<String> imgUrlList, int article_id);
 
+	String thumbnail(String article_firstImageUrl);
+
 }

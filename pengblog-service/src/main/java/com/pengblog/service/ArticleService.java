@@ -493,7 +493,9 @@ public class ArticleService implements IarticleService{
 			
 			String article_firstImageUrl = doc.select("img[src]").first().attr("src");
 			
-			String article_previewImageUrl = article_firstImageUrl + "?imageView2/1/w/200/h/150/interlace/1/q/53";
+			//String article_previewImageUrl = article_firstImageUrl + "?imageView2/1/w/200/h/150/interlace/1/q/53";
+			
+			String article_previewImageUrl = txCosService.thumbnail(article_firstImageUrl);
 			
 			article.setArticle_previewImageUrl(article_previewImageUrl);
 			
