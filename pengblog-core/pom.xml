@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
   <artifactId>pengblog-core</artifactId>
     <properties>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <spring.version>4.3.1.RELEASE</spring.version>
         <aspectj.version>1.8.10</aspectj.version>
         <mybatis.version>3.2.7</mybatis.version>
